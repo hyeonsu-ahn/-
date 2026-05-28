@@ -1,0 +1,107 @@
+```
+#2146B
+
+
+t = int(input())
+
+for _ in range(t) :
+  n,m = map(int, input().split())
+  result = 'YES'
+  total_element = set()
+  set_li = []
+  perfect_set = set()
+  for i in range(1,m+1) :
+    perfect_set.add(i)
+  print("Perfect SET: ", perfect_set)#
+  for i in range(n) :
+    st = set(map(int, input().split()))
+    total_element |= st
+    set_li.append(st)
+  print("TOTAL ELEMENT: ", total_element)#
+  print("SET LIST: ", set_li)#
+
+  if (perfect_set - total_element) != set() :
+    result = 'NO'
+    print("THERE")#
+  else:
+    temp_set = set()
+    long_set = set_li[0]
+    for i in range(1,len(set_li)) :
+      if len(long_set) < len(set_li[i]) :
+        long_set = set_li[i]
+    temp_set |= long_set
+    
+
+    for i in range(len(set_li)) :
+      target_set = set_li[i]
+      #해당 집합에서 겹치는게 없다.
+      if ((perfect_set - temp_set) - target_set)== (perfect_set - temp_set) :
+        set_li.pop(i)
+    
+    long_set = set_li[0]
+    for i in range(1,len(set_li)) :
+      if len(long_set) < len(set_li[i]) :
+        long_set = set_li[i]
+    temp_set |= long_set
+    
+    for i in range(len(set_li)) :
+      target_set = set_li[i]
+      #해당 집합에서 겹치는게 없다.
+      if ((perfect_set - temp_set) - target_set)== (perfect_set - temp_set) :
+        set_li.pop(i)
+    
+    long_set = set_li[0]
+    for i in range(1,len(set_li)) :
+      if len(long_set) < len(set_li[i]) :
+        long_set = set_li[i]
+    temp_set |= long_set
+
+    if (perfect_set - temp_set) != set() :
+      result = 'NO'
+    
+
+  print(result)
+      
+```
+
+1.문제 해석
+  t개의 테스트 케이스 가 주어지고 n개의 집합을 입력받는다.(m까지의 수가 들어있을 수 있는 집합.) 
+  
+  출력:
+    n개 중 3개를 골라 1~m까지 수가 들어있는 집합을 만들 수 있으면 YES, 아니면 NO를 출력한다
+
+  조건:
+    2<=<=5*10^4
+    1<=m<=10^5
+
+2. 계획세우기
+  질문들...
+    1. 집합들 중 3개를 어떤 기준으로 뽑을까?
+    2. 무식하게 풀수있나?
+    3. 하나만 YES이면 YES출력아닌가?
+      -> 3-1. 하나의 경우를 빨리찾는 법은 뭘까?
+         3-2. 제일 희귀한 원소는 무조건 포함해야하지않나?
+         ->  YES가 나오는 경우 제일 희귀한 원소는 무조건 포함되어있다.
+
+  나름의 결론:
+    현제 가지고 있는 것중 제일 희귀한 원소를 가지는 집합 중 제일 긴것을 고르는것이 최선일것같다.
+    이걸 세번 반복하면 될듯하다.
+
+3. 계획구현
+  NO일 경우를 조건으로 세워서 흐름을 만든다.
+    if : 1~m까지 원소가 n개의 집합의 원소들중에 하나라도 포함하고 있지 않는것이 있다면 NO
+    else :
+      1~n까지 집합을 하나하나 추가해야하는 원소들로 구성된 집합을 빼서 원소수가 바뀌면 겹치는게 있다는 뜻이니까 
+      그중에서 제일 긴놈을 정한다.
+
+4. 구현 할 때 막히는것들
+  파이썬에서 집합 선언(set()으로 선언해야 함)
+  합집합연산 왜인지는 모르겠는데 .union하니까 잘 안됨 '|' 이거 사용했음.
+
+
+  
+
+
+
+
+
