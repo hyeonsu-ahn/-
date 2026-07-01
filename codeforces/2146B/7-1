@@ -1,0 +1,67 @@
+#2146B
+def count_elem(set_li,n, m) :
+  element_num = []
+  for i in range(1, m+1) :
+    element = 0
+    for j in range(n) :
+      if i in set_li[j] :
+        element += 1
+    element_num.append(element)
+  #인덱스+1 에 해당하는 숫자의 횟수를 반환.
+  return element_num
+
+
+
+t = int(input())
+
+for _ in range(t) :
+  n,m = map(int, input().split())
+  result = 'YES'
+  total_element = set()
+  set_li = []
+  perfect_set = set()
+  for i in range(1,m+1) :
+    perfect_set.add(i)
+
+  for i in range(n) :
+    #중복제거한 집합.
+    st = list(map(int, input().split()))
+    st.pop(0)
+    total_element |= set(st)
+    set_li.append(st)
+  total_element = list(total_element)
+
+  element = count_elem(set_li,n,m)
+  
+  #m까지 원소 없으면
+  if  0 in element :
+    result = 'NO'
+  elif n == 2:
+    result = 'NO'
+  else:
+    result_set = set()
+    while result_set != perfect_set and len(set_li) != 0:
+      ele_list = count_elem(set_li, n ,m)
+      for i in range(n) :
+        if (ele_list.index(min(ele_list))+1) in set_li[i] :
+          result_set = result_set.union(set(set_li.pop(i)))
+          n -= 1
+          break
+    
+    if len(set_li) >= 2 and result_set == perfect_set :
+      result = "YES"
+    else :
+      result = "NO"
+
+
+
+
+
+
+
+  print(result)
+
+
+
+
+codeforces 웹 페이지 404error로 제출 못함.
